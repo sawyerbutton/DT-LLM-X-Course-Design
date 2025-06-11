@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>混合LLM架构开发实现路径</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: transparent;
+            min-height: 100vh;
+            padding: 30px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: transparent;
+            border-radius: 20px;
+            padding: 40px;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e40af, #1e3a8a);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(30, 64, 175, 0.3);
+        }
+        
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .architecture-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 3px solid #1e40af;
+        }
+        
+        .architecture-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .architecture-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .arch-layer {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 2px solid #3b82f6;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .arch-layer:hover {
+            transform: translateX(5px);
+        }
+        
+        .arch-layer.input {
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            border-color: #10b981;
+        }
+        
+        .arch-layer.routing {
+            background: linear-gradient(135deg, #fef3c7, #fed7aa);
+            border-color: #f59e0b;
+        }
+        
+        .arch-layer.processing {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-color: #3b82f6;
+        }
+        
+        .arch-layer.output {
+            background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+            border-color: #8b5cf6;
+        }
+        
+        .layer-title {
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .layer-content {
+            color: #475569;
+            font-size: 0.9rem;
+        }
+        
+        .layer-arrow {
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: #64748b;
+        }
+        
+        .timeline-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 3px solid #1e40af;
+        }
+        
+        .timeline-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .timeline-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .timeline-phase {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #3b82f6;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-phase:hover {
+            background: #f1f5f9;
+            border-left-color: #1e40af;
+            transform: translateY(-2px);
+        }
+        
+        .timeline-phase::before {
+            content: "";
+            position: absolute;
+            left: -10px;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background: #3b82f6;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+        
+        .phase-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1e40af;
+            margin-bottom: 12px;
+        }
+        
+        .phase-tasks {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .phase-tasks li {
+            color: #475569;
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.9rem;
+        }
+        
+        .phase-tasks li::before {
+            content: "•";
+            color: #3b82f6;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .bottom-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .tech-points, .challenges {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 3px solid #1e40af;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tech-point, .challenge-item {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 12px 0;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .point-title, .challenge-title {
+            font-weight: bold;
+            color: #1e40af;
+            margin-bottom: 5px;
+        }
+        
+        .point-desc, .challenge-desc {
+            color: #475569;
+            font-size: 0.9rem;
+        }
+        
+        .challenge-solution {
+            background: linear-gradient(135deg, #1e40af, #1e3a8a);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .solution-label {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+        }
+        
+        @media (max-width: 1200px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .bottom-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .timeline-phase::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 标题 -->
+        <h1 class="title">🏗️ 混合LLM架构 - 8周开发实现路径</h1>
+        
+        <!-- 主要布局 -->
+        <div class="main-layout">
+            <!-- 左侧：系统架构图 -->
+            <div class="architecture-section">
+                <div class="architecture-title">
+                    <span class="emoji">📊</span>
+                    系统架构设计
+                </div>
+                
+                <div class="architecture-diagram">
+                    <div class="arch-layer input">
+                        <div class="layer-title">输入层</div>
+                        <div class="layer-content">PDF解析 + 文本预处理</div>
+                        <div class="layer-arrow">↓</div>
+                    </div>
+                    
+                    <div class="arch-layer routing">
+                        <div class="layer-title">智能路由</div>
+                        <div class="layer-content">任务分类 + 模块分配</div>
+                        <div class="layer-arrow">↓</div>
+                    </div>
+                    
+                    <div class="arch-layer processing">
+                        <div class="layer-title">处理层</div>
+                        <div class="layer-content">专业LLM + 通用LLM + 后处理</div>
+                        <div class="layer-arrow">↓</div>
+                    </div>
+                    
+                    <div class="arch-layer output">
+                        <div class="layer-title">输出层</div>
+                        <div class="layer-content">结构化结果 + 质量评分</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右侧：8周开发计划时间线 -->
+            <div class="timeline-section">
+                <div class="timeline-title">
+                    <span class="emoji">📅</span>
+                    8周开发计划
+                </div>
+                
+                <div class="timeline-container">
+                    <div class="timeline-phase">
+                        <div class="phase-title">第1-2周：需求细化 + 架构设计</div>
+                        <ul class="phase-tasks">
+                            <li>详细功能规格定义</li>
+                            <li>技术架构确定</li>
+                            <li>开发环境搭建</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-phase">
+                        <div class="phase-title">第3-4周：核心模块开发</div>
+                        <ul class="phase-tasks">
+                            <li>PDF解析模块</li>
+                            <li>LLM接口封装</li>
+                            <li>智能路由逻辑</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-phase">
+                        <div class="phase-title">第5-6周：专业优化</div>
+                        <ul class="phase-tasks">
+                            <li>学术文本预处理</li>
+                            <li>专业术语识别</li>
+                            <li>结果质量评估</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-phase">
+                        <div class="phase-title">第7-8周：集成测试</div>
+                        <ul class="phase-tasks">
+                            <li>系统集成联调</li>
+                            <li>效果验证测试</li>
+                            <li>性能优化调整</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部：技术要点和实现难点 -->
+        <div class="bottom-section">
+            <!-- 关键技术要点 -->
+            <div class="tech-points">
+                <div class="section-title">
+                    <span class="emoji">🔑</span>
+                    关键技术要点
+                </div>
+                
+                <div class="tech-point">
+                    <div class="point-title">智能文档解析</div>
+                    <div class="point-desc">
+                        PDF文档智能解析和结构识别，支持多种学术论文格式
+                    </div>
+                </div>
+                
+                <div class="tech-point">
+                    <div class="point-title">负载均衡机制</div>
+                    <div class="point-desc">
+                        多LLM服务的负载均衡和容错，确保系统稳定性
+                    </div>
+                </div>
+                
+                <div class="tech-point">
+                    <div class="point-title">知识图谱应用</div>
+                    <div class="point-desc">
+                        专业领域知识图谱的构建和应用，提升理解准确性
+                    </div>
+                </div>
+                
+                <div class="tech-point">
+                    <div class="point-title">质量评估体系</div>
+                    <div class="point-desc">
+                        结果质量的自动评估和反馈机制，持续优化效果
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 技术实现难点与解决方案 -->
+            <div class="challenges">
+                <div class="section-title">
+                    <span class="emoji">⚡</span>
+                    技术实现难点与解决方案
+                </div>
+                
+                <div class="challenge-item">
+                    <div class="challenge-title">难点1：论文格式多样化</div>
+                    <div class="challenge-desc">
+                        不同期刊和会议的论文格式差异巨大，解析困难
+                    </div>
+                    <div class="challenge-solution">
+                        <div class="solution-label">解决方案：</div>
+                        自适应解析算法，基于文档结构特征自动识别格式
+                    </div>
+                </div>
+                
+                <div class="challenge-item">
+                    <div class="challenge-title">难点2：专业术语理解</div>
+                    <div class="challenge-desc">
+                        跨学科专业术语复杂，通用LLM理解能力有限
+                    </div>
+                    <div class="challenge-solution">
+                        <div class="solution-label">解决方案：</div>
+                        领域知识库辅助，构建专业术语映射和解释体系
+                    </div>
+                </div>
+                
+                <div class="challenge-item">
+                    <div class="challenge-title">难点3：结果质量控制</div>
+                    <div class="challenge-desc">
+                        如何确保输出结果的准确性和可靠性
+                    </div>
+                    <div class="challenge-solution">
+                        <div class="solution-label">解决方案：</div>
+                        多维度评估体系，结合置信度评分和交叉验证机制
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

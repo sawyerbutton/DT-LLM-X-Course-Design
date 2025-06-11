@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leo AI 案例研究</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: transparent;
+            min-height: 100vh;
+            padding: 30px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: transparent;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: none;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #0369a1;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.3);
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 3px solid #06b6d4;
+        }
+        
+        .logo-placeholder {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.3);
+        }
+        
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #0369a1;
+            text-align: center;
+        }
+        
+        .info-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #06b6d4;
+            transition: transform 0.3s ease;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #0369a1;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-content {
+            color: #475569;
+            font-size: 1rem;
+        }
+        
+        .card-content ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .card-content li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .card-content li::before {
+            content: "•";
+            color: #06b6d4;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .bottom-section {
+            background: linear-gradient(135deg, #065f46, #047857);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(6, 95, 70, 0.3);
+        }
+        
+        .bottom-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #d1fae5;
+        }
+        
+        .insight {
+            font-size: 1.3rem;
+            font-weight: bold;
+            background: rgba(255,255,255,0.2);
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .product-link {
+            display: inline-block;
+            background: #06b6d4;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+            box-shadow: 0 3px 10px rgba(6, 182, 212, 0.3);
+        }
+        
+        .product-link:hover {
+            background: #0891b2;
+            transform: translateY(-2px);
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 标题 -->
+        <h1 class="title">📚 真实案例①：Leo AI - 教师的LLM助手</h1>
+        
+        <!-- 主要内容区域 -->
+        <div class="main-content">
+            <!-- 左侧Logo区域 -->
+            <div class="logo-section">
+                <div class="logo-placeholder">
+                    Leo AI
+                </div>
+                <div class="logo-text">
+                    教师的智能助手<br>
+                    LLM驱动的教育工具
+                </div>
+            </div>
+            
+            <!-- 右侧信息卡片 -->
+            <div class="info-cards">
+                <!-- 产品定位 -->
+                <div class="info-card">
+                    <div class="card-title">
+                        <span class="emoji">🎯</span>
+                        产品定位
+                    </div>
+                    <div class="card-content">
+                        LLM驱动的教学辅助工具<br>
+                        帮助教师自动批改作业，生成教学材料
+                    </div>
+                </div>
+                
+                <!-- 创始人背景 -->
+                <div class="info-card">
+                    <div class="card-title">
+                        <span class="emoji">👨‍🏫</span>
+                        创始人背景
+                    </div>
+                    <div class="card-content">
+                        教师背景的创业者<br>
+                        深度理解教育行业痛点
+                    </div>
+                </div>
+                
+                <!-- 核心功能 -->
+                <div class="info-card">
+                    <div class="card-title">
+                        <span class="emoji">⚡</span>
+                        核心功能
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>LLM自动批改作业和试卷</li>
+                            <li>智能生成个性化教学材料</li>
+                            <li>学生学习进度分析和建议</li>
+                            <li>教学质量评估和改进建议</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 发展成果 -->
+                <div class="info-card">
+                    <div class="card-title">
+                        <span class="emoji">🏆</span>
+                        发展成果
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>显著提升教师工作效率</li>
+                            <li>获得多所教育机构采用</li>
+                            <li>建立稳定的用户基础</li>
+                            <li>形成可持续的商业模式</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部成功要素和启示 -->
+        <div class="bottom-section">
+            <div class="bottom-title">
+                <span class="emoji">💡</span>
+                核心启示
+            </div>
+            <div class="insight">
+                专业背景 + LLM工具 = 职业优势突破
+            </div>
+            <div style="margin-top: 25px; font-size: 1.1rem;">
+                <strong>成功要素：</strong><br>
+                ✅ 深入了解行业痛点 &nbsp;&nbsp; ✅ 专业背景优势 &nbsp;&nbsp; ✅ LLM技术应用 &nbsp;&nbsp; ✅ 产品市场匹配
+            </div>
+            <a href="https://www.withleo.ai/" target="_blank" class="product-link">
+                🔗 访问 Leo AI 官网
+            </a>
+        </div>
+    </div>
+</body>
+</html> 
