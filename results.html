@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实验结果</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            margin: 0;
+            padding: 40px;
+            height: 100vh;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        .slide-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            color: #1a202c;
+        }
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .results-table {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table th, .table td {
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .table th {
+            background: rgba(67, 233, 123, 0.2);
+            font-weight: bold;
+        }
+        .highlight-row {
+            background: rgba(67, 233, 123, 0.1);
+            font-weight: bold;
+        }
+        .achievement-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .achievement-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 2px solid rgba(67, 233, 123, 0.3);
+        }
+        .achievement-card:hover {
+            transform: translateY(-5px);
+        }
+        .score-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #059669;
+            margin: 1rem 0;
+        }
+        .improvement {
+            color: #059669;
+            font-weight: bold;
+        }
+        .comparison-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .model-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .model-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid rgba(67, 233, 123, 0.3);
+        }
+        .cost-comparison {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .cost-chart {
+            display: flex;
+            justify-content: space-around;
+            align-items: end;
+            height: 200px;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(67, 233, 123, 0.1);
+            border-radius: 15px;
+        }
+        .cost-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: end;
+        }
+        .bar {
+            width: 40px;
+            background: linear-gradient(0deg, #059669, #10b981);
+            border-radius: 5px 5px 0 0;
+            margin-bottom: 0.5rem;
+        }
+        .parsing-results {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .f1-score {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #059669;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .icon-large {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #059669;
+        }
+        @media (max-width: 768px) {
+            .title { font-size: 2rem; }
+            .achievement-cards { grid-template-columns: 1fr; }
+            .cost-chart { height: 150px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-content">
+        <h1 class="title">实验结果与成就</h1>
+        
+        <!-- 主要成就 -->
+        <div class="achievement-cards">
+            <div class="achievement-card">
+                <div class="icon-large"><i class="fas fa-trophy"></i></div>
+                <h3 class="text-lg font-bold mb-2">WMT 2014 英德</h3>
+                <div class="score-value">28.4</div>
+                <p class="text-sm">BLEU分数</p>
+                <p class="text-xs text-green-600 mt-2">+2.0 BLEU 提升</p>
+            </div>
+            <div class="achievement-card">
+                <div class="icon-large"><i class="fas fa-star"></i></div>
+                <h3 class="text-lg font-bold mb-2">WMT 2014 英法</h3>
+                <div class="score-value">41.8</div>
+                <p class="text-sm">BLEU分数</p>
+                <p class="text-xs text-green-600 mt-2">新的SOTA记录</p>
+            </div>
+            <div class="achievement-card">
+                <div class="icon-large"><i class="fas fa-clock"></i></div>
+                <h3 class="text-lg font-bold mb-2">训练效率</h3>
+                <div class="score-value">1/4</div>
+                <p class="text-sm">训练成本</p>
+                <p class="text-xs text-green-600 mt-2">相比之前SOTA</p>
+            </div>
+        </div>
+
+        <!-- 详细结果表格 -->
+        <div class="results-table">
+            <h2 class="text-2xl font-bold mb-4 text-center">机器翻译结果对比</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>模型</th>
+                        <th>EN-DE BLEU</th>
+                        <th>EN-FR BLEU</th>
+                        <th>训练成本 (FLOPs)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ByteNet</td>
+                        <td>23.75</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>GNMT + RL</td>
+                        <td>24.6</td>
+                        <td>39.92</td>
+                        <td>2.3×10¹⁹</td>
+                    </tr>
+                    <tr>
+                        <td>ConvS2S</td>
+                        <td>25.16</td>
+                        <td>40.46</td>
+                        <td>9.6×10¹⁸</td>
+                    </tr>
+                    <tr>
+                        <td>GNMT + RL Ensemble</td>
+                        <td>26.30</td>
+                        <td>41.16</td>
+                        <td>1.8×10²⁰</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td><strong>Transformer (基础)</strong></td>
+                        <td><span class="improvement">27.3</span></td>
+                        <td><span class="improvement">38.1</span></td>
+                        <td><span class="improvement">3.3×10¹⁸</span></td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td><strong>Transformer (大模型)</strong></td>
+                        <td><span class="improvement">28.4</span></td>
+                        <td><span class="improvement">41.8</span></td>
+                        <td><span class="improvement">2.3×10¹⁹</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 成本效率对比 -->
+        <div class="cost-comparison">
+            <h3 class="text-xl font-bold mb-4 text-center">训练成本效率对比</h3>
+            <div class="cost-chart">
+                <div class="cost-bar">
+                    <div class="bar" style="height: 80px;"></div>
+                    <div class="text-sm font-bold">ConvS2S</div>
+                    <div class="text-xs">9.6×10¹⁸</div>
+                </div>
+                <div class="cost-bar">
+                    <div class="bar" style="height: 120px;"></div>
+                    <div class="text-sm font-bold">GNMT+RL</div>
+                    <div class="text-xs">2.3×10¹⁹</div>
+                </div>
+                <div class="cost-bar">
+                    <div class="bar" style="height: 30px; background: linear-gradient(0deg, #16a34a, #22c55e);"></div>
+                    <div class="text-sm font-bold text-green-600">Transformer</div>
+                    <div class="text-xs text-green-600">3.3×10¹⁸</div>
+                </div>
+            </div>
+            <p class="text-center text-sm">Transformer的训练成本仅为竞争对手的1/3至1/7</p>
+        </div>
+
+        <!-- 模型变化实验 -->
+        <div class="comparison-section">
+            <h3 class="text-xl font-bold mb-4 text-center">消融研究：模型组件的重要性</h3>
+            <div class="model-comparison">
+                <div class="model-card">
+                    <h4 class="font-bold text-green-600 mb-2">基础模型</h4>
+                    <div class="text-2xl font-bold text-green-600">25.8</div>
+                    <p class="text-sm">BLEU (基准)</p>
+                </div>
+                <div class="model-card">
+                    <h4 class="font-bold mb-2">单头注意力</h4>
+                    <div class="text-2xl font-bold text-red-600">24.9</div>
+                    <p class="text-sm">BLEU (-0.9)</p>
+                </div>
+                <div class="model-card">
+                    <h4 class="font-bold mb-2">更大模型</h4>
+                    <div class="text-2xl font-bold text-green-600">26.4</div>
+                    <p class="text-sm">BLEU (+0.6)</p>
+                </div>
+                <div class="model-card">
+                    <h4 class="font-bold mb-2">无Dropout</h4>
+                    <div class="text-2xl font-bold text-red-600">24.6</div>
+                    <p class="text-sm">BLEU (-1.2)</p>
+                </div>
+            </div>
+            <p class="text-center text-sm mt-4">
+                实验表明多头注意力和正则化技术对模型性能至关重要
+            </p>
+        </div>
+
+        <!-- 句法分析结果 -->
+        <div class="parsing-results">
+            <h3 class="text-xl font-bold mb-4 text-center">
+                <i class="fas fa-tree text-green-600 mr-2"></i>
+                英语成分句法分析
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="text-center">
+                    <h4 class="font-bold text-green-600 mb-2">仅WSJ训练</h4>
+                    <div class="f1-score">91.3</div>
+                    <p class="text-sm">F1分数</p>
+                    <p class="text-xs text-gray-600">40K训练句子</p>
+                </div>
+                <div class="text-center">
+                    <h4 class="font-bold text-green-600 mb-2">半监督训练</h4>
+                    <div class="f1-score">92.7</div>
+                    <p class="text-sm">F1分数</p>
+                    <p class="text-xs text-gray-600">17M训练句子</p>
+                </div>
+            </div>
+            <p class="text-center text-sm mt-4">
+                即使缺乏任务特定调优，Transformer也表现出色，展现了良好的泛化能力
+            </p>
+        </div>
+
+        <!-- 关键发现 -->
+        <div class="comparison-section">
+            <h3 class="text-xl font-bold mb-4 text-center">
+                <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                关键发现与洞察
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <h4 class="font-bold text-green-600 mb-2">性能突破</h4>
+                    <ul class="text-sm space-y-2">
+                        <li>• 在多个翻译任务上创造新记录</li>
+                        <li>• 单模型性能超越集成模型</li>
+                        <li>• 训练效率大幅提升</li>
+                        <li>• 泛化能力强（句法分析）</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-green-600 mb-2">技术贡献</h4>
+                    <ul class="text-sm space-y-2">
+                        <li>• 证明了"注意力就是你所需要的一切"</li>
+                        <li>• 开创了纯注意力架构的先河</li>
+                        <li>• 为后续研究奠定基础</li>
+                        <li>• 实现了真正的并行化训练</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

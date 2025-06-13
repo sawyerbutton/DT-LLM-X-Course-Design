@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>引言与摘要</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .slide-content {
+            max-width: 1200px;
+            width: 90%;
+            text-align: center;
+            color: white;
+        }
+        .title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+        .highlight-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .abstract-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: left;
+            margin: 1rem 0;
+        }
+        .key-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .point-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        .point-card:hover {
+            transform: translateY(-5px);
+        }
+        .icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #fbbf24;
+        }
+        @media (max-width: 768px) {
+            .title { font-size: 2.5rem; }
+            .subtitle { font-size: 1.2rem; }
+            .key-points { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-content">
+        <h1 class="title">Attention is All You Need</h1>
+        <p class="subtitle">注意力就是你所需要的一切</p>
+        
+        <div class="highlight-box">
+            <h2 class="text-2xl font-bold mb-4">论文摘要</h2>
+            <p class="abstract-text">
+                主流的序列转换模型基于复杂的循环或卷积神经网络，包括一个编码器和一个解码器。
+                我们提出了一种新的简单网络架构——<strong>Transformer</strong>，完全基于注意力机制，
+                完全摒弃了循环和卷积。
+            </p>
+            <p class="abstract-text">
+                在两个机器翻译任务上的实验表明，这些模型在质量上更优越，同时具有更好的并行性，
+                训练时间显著减少。我们的模型在WMT 2014英德翻译任务上达到了28.4 BLEU分数，
+                比现有最佳结果提高了超过2个BLEU分数。
+            </p>
+        </div>
+
+        <div class="key-points">
+            <div class="point-card">
+                <div class="icon"><i class="fas fa-bolt"></i></div>
+                <h3 class="text-lg font-bold mb-2">高效并行</h3>
+                <p class="text-sm">完全基于注意力机制，避免了循环结构，实现更好的并行化训练</p>
+            </div>
+            <div class="point-card">
+                <div class="icon"><i class="fas fa-trophy"></i></div>
+                <h3 class="text-lg font-bold mb-2">卓越性能</h3>
+                <p class="text-sm">在机器翻译任务上创造了新的最先进结果，BLEU分数显著提升</p>
+            </div>
+            <div class="point-card">
+                <div class="icon"><i class="fas fa-rocket"></i></div>
+                <h3 class="text-lg font-bold mb-2">简洁架构</h3>
+                <p class="text-sm">摒弃复杂的循环和卷积，仅使用注意力机制构建模型架构</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

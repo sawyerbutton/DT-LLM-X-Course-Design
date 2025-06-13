@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模型架构</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            margin: 0;
+            padding: 40px;
+            height: 100vh;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        .slide-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            color: white;
+        }
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .architecture-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .component-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+        .encoder-decoder {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+        .encoder, .decoder {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .layer-stack {
+            margin: 1rem 0;
+        }
+        .layer {
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0.5rem 0;
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+        }
+        .layer:hover {
+            transform: scale(1.05);
+        }
+        .attention-layer { border-left: 4px solid #fbbf24; }
+        .ffn-layer { border-left: 4px solid #34d399; }
+        .cross-attention { border-left: 4px solid #f87171; }
+        .flow-arrow {
+            font-size: 2rem;
+            color: #fbbf24;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .spec-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .spec-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fbbf24;
+        }
+        @media (max-width: 1024px) {
+            .architecture-container {
+                grid-template-columns: 1fr;
+            }
+            .encoder-decoder {
+                flex-direction: column;
+            }
+        }
+        @media (max-width: 768px) {
+            .title { font-size: 2rem; }
+            .specs { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-content">
+        <h1 class="title">Transformer 架构</h1>
+        
+        <div class="architecture-container">
+            <!-- 输入部分 -->
+            <div class="component-box">
+                <h3 class="text-xl font-bold mb-4">
+                    <i class="fas fa-sign-in-alt text-green-400 mr-2"></i>
+                    输入处理
+                </h3>
+                <div class="layer">Input Embedding</div>
+                <div class="flow-arrow">+</div>
+                <div class="layer">Positional Encoding</div>
+                <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                <p class="text-sm mt-4">将输入token转换为向量表示并添加位置信息</p>
+            </div>
+
+            <!-- 核心架构 -->
+            <div class="component-box">
+                <h3 class="text-xl font-bold mb-4">编码器-解码器架构</h3>
+                <div class="encoder-decoder">
+                    <!-- 编码器 -->
+                    <div class="encoder">
+                        <h4 class="font-bold mb-3 text-center">编码器 (N=6)</h4>
+                        <div class="layer-stack">
+                            <div class="layer attention-layer">Multi-Head Self-Attention</div>
+                            <div class="flow-arrow"><i class="fas fa-plus"></i></div>
+                            <div class="layer" style="background: rgba(255,255,255,0.1);">Add & Norm</div>
+                            <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                            <div class="layer ffn-layer">Feed Forward Network</div>
+                            <div class="flow-arrow"><i class="fas fa-plus"></i></div>
+                            <div class="layer" style="background: rgba(255,255,255,0.1);">Add & Norm</div>
+                        </div>
+                        <div class="text-xs mt-2">× 6 层</div>
+                    </div>
+
+                    <!-- 解码器 -->
+                    <div class="decoder">
+                        <h4 class="font-bold mb-3 text-center">解码器 (N=6)</h4>
+                        <div class="layer-stack">
+                            <div class="layer attention-layer">Masked Self-Attention</div>
+                            <div class="flow-arrow"><i class="fas fa-plus"></i></div>
+                            <div class="layer" style="background: rgba(255,255,255,0.1);">Add & Norm</div>
+                            <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                            <div class="layer cross-attention">Cross-Attention</div>
+                            <div class="flow-arrow"><i class="fas fa-plus"></i></div>
+                            <div class="layer" style="background: rgba(255,255,255,0.1);">Add & Norm</div>
+                            <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                            <div class="layer ffn-layer">Feed Forward Network</div>
+                            <div class="flow-arrow"><i class="fas fa-plus"></i></div>
+                            <div class="layer" style="background: rgba(255,255,255,0.1);">Add & Norm</div>
+                        </div>
+                        <div class="text-xs mt-2">× 6 层</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 输出部分 -->
+            <div class="component-box">
+                <h3 class="text-xl font-bold mb-4">
+                    <i class="fas fa-sign-out-alt text-red-400 mr-2"></i>
+                    输出生成
+                </h3>
+                <div class="layer">Linear Projection</div>
+                <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                <div class="layer">Softmax</div>
+                <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                <div class="layer">Output Probabilities</div>
+                <p class="text-sm mt-4">生成下一个token的概率分布</p>
+            </div>
+        </div>
+
+        <!-- 关键规格 -->
+        <div class="specs">
+            <div class="spec-card">
+                <div class="spec-value">512</div>
+                <div class="text-sm">模型维度 (d_model)</div>
+            </div>
+            <div class="spec-card">
+                <div class="spec-value">8</div>
+                <div class="text-sm">注意力头数 (h)</div>
+            </div>
+            <div class="spec-card">
+                <div class="spec-value">2048</div>
+                <div class="text-sm">FFN维度 (d_ff)</div>
+            </div>
+            <div class="spec-card">
+                <div class="spec-value">6</div>
+                <div class="text-sm">编码器/解码器层数</div>
+            </div>
+        </div>
+
+        <!-- 核心特点 -->
+        <div class="component-box mt-4">
+            <h3 class="text-xl font-bold mb-4">
+                <i class="fas fa-star text-yellow-400 mr-2"></i>
+                核心设计特点
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="text-center">
+                    <i class="fas fa-layer-group text-3xl text-blue-400 mb-2"></i>
+                    <h4 class="font-bold">残差连接</h4>
+                    <p class="text-sm">每个子层都有残差连接和层归一化</p>
+                </div>
+                <div class="text-center">
+                    <i class="fas fa-eye text-3xl text-green-400 mb-2"></i>
+                    <h4 class="font-bold">注意力机制</h4>
+                    <p class="text-sm">多头自注意力和交叉注意力</p>
+                </div>
+                <div class="text-center">
+                    <i class="fas fa-stream text-3xl text-purple-400 mb-2"></i>
+                    <h4 class="font-bold">并行处理</h4>
+                    <p class="text-sm">无循环结构，支持高效并行化</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

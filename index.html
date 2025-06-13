@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attention is All You Need - 演示</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            overflow: hidden; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+        }
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            position: relative;
+        }
+        .sidebar.hidden {
+            transform: translateX(-280px);
+        }
+        .main-content {
+            flex: 1;
+            position: relative;
+            background: #f8fafc;
+        }
+        .slide-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+        .nav-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: white;
+        }
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-left-color: #fbbf24;
+            color: white;
+        }
+        .toggle-btn {
+            position: absolute;
+            top: 20px;
+            left: 300px;
+            z-index: 1001;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .toggle-btn.sidebar-hidden {
+            left: 20px;
+        }
+        .fullscreen-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .slide-indicator {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar" id="sidebar">
+            <div class="p-6 border-b border-white/20">
+                <h1 class="text-white text-xl font-bold">Attention is All You Need</h1>
+                <p class="text-white/70 text-sm mt-2">Transformer架构详解</p>
+            </div>
+            <nav class="mt-4">
+                <div class="nav-item active" data-slide="intro">
+                    <i class="fas fa-home mr-3"></i>引言与摘要
+                </div>
+                <div class="nav-item" data-slide="background">
+                    <i class="fas fa-history mr-3"></i>背景介绍
+                </div>
+                <div class="nav-item" data-slide="architecture">
+                    <i class="fas fa-sitemap mr-3"></i>模型架构
+                </div>
+                <div class="nav-item" data-slide="attention">
+                    <i class="fas fa-eye mr-3"></i>注意力机制
+                </div>
+                <div class="nav-item" data-slide="multi-head">
+                    <i class="fas fa-layer-group mr-3"></i>多头注意力
+                </div>
+                <div class="nav-item" data-slide="self-attention">
+                    <i class="fas fa-arrows-alt mr-3"></i>自注意力
+                </div>
+                <div class="nav-item" data-slide="positional">
+                    <i class="fas fa-sort-numeric-up mr-3"></i>位置编码
+                </div>
+                <div class="nav-item" data-slide="training">
+                    <i class="fas fa-cogs mr-3"></i>训练过程
+                </div>
+                <div class="nav-item" data-slide="results">
+                    <i class="fas fa-chart-line mr-3"></i>实验结果
+                </div>
+                <div class="nav-item" data-slide="conclusion">
+                    <i class="fas fa-flag-checkered mr-3"></i>总结展望
+                </div>
+            </nav>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <iframe id="slideFrame" class="slide-frame" src="intro.html"></iframe>
+        </div>
+
+        <!-- 控制按钮 -->
+        <button class="toggle-btn" id="toggleBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <button class="fullscreen-btn" id="fullscreenBtn">
+            <i class="fas fa-expand"></i>
+        </button>
+
+        <!-- 幻灯片指示器 -->
+        <div class="slide-indicator" id="slideIndicator">
+            1 / 10
+        </div>
+    </div>
+
+    <script>
+        const slides = ['intro', 'background', 'architecture', 'attention', 'multi-head', 'self-attention', 'positional', 'training', 'results', 'conclusion'];
+        let currentSlide = 0;
+        
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const slideFrame = document.getElementById('slideFrame');
+        const slideIndicator = document.getElementById('slideIndicator');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        // 切换侧边栏
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+            toggleBtn.classList.toggle('sidebar-hidden');
+        });
+
+        // 全屏功能
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                document.exitFullscreen();
+                fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+        });
+
+        // 导航点击
+        navItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                currentSlide = index;
+                loadSlide(slides[currentSlide]);
+                updateNavigation();
+            });
+        });
+
+        // 键盘导航
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                currentSlide--;
+                loadSlide(slides[currentSlide]);
+                updateNavigation();
+            } else if (e.key === 'ArrowRight' && currentSlide < slides.length - 1) {
+                currentSlide++;
+                loadSlide(slides[currentSlide]);
+                updateNavigation();
+            }
+        });
+
+        function loadSlide(slideName) {
+            slideFrame.src = `${slideName}.html`;
+        }
+
+        function updateNavigation() {
+            navItems.forEach((item, index) => {
+                item.classList.toggle('active', index === currentSlide);
+            });
+            slideIndicator.textContent = `${currentSlide + 1} / ${slides.length}`;
+        }
+
+        // 初始化
+        updateNavigation();
+    </script>
+</body>
+</html> 
