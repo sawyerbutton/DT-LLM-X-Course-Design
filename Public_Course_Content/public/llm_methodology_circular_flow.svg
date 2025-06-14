@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" style="background: transparent;">
+  <defs>
+    <linearGradient id="step1Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667EEA"/>
+      <stop offset="100%" style="stop-color:#764BA2"/>
+    </linearGradient>
+    <linearGradient id="step2Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667EEA"/>
+      <stop offset="100%" style="stop-color:#764BA2"/>
+    </linearGradient>
+    <linearGradient id="step3Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667EEA"/>
+      <stop offset="100%" style="stop-color:#764BA2"/>
+    </linearGradient>
+    <linearGradient id="step4Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667EEA"/>
+      <stop offset="100%" style="stop-color:#764BA2"/>
+    </linearGradient>
+    <linearGradient id="step5Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667EEA"/>
+      <stop offset="100%" style="stop-color:#764BA2"/>
+    </linearGradient>
+    <linearGradient id="centerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD93D"/>
+      <stop offset="100%" style="stop-color:#FF6B35"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="rgba(0,0,0,0.1)"/>
+    </filter>
+  </defs>
+  
+  <!-- 中心圆形 - 成功公式 -->
+  <circle cx="400" cy="300" r="80" fill="url(#centerGradient)" filter="url(#shadow)"/>
+  <text x="400" y="290" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="Arial, sans-serif">🏆 成功公式</text>
+  <text x="400" y="310" text-anchor="middle" fill="white" font-size="10" font-family="Arial, sans-serif">专业背景 × LLM技术</text>
+  <text x="400" y="325" text-anchor="middle" fill="white" font-size="10" font-family="Arial, sans-serif">× 快速迭代</text>
+  
+  <!-- 第1步：需求洞察 -->
+  <circle cx="400" cy="120" r="60" fill="url(#step1Gradient)" filter="url(#shadow)"/>
+  <text x="400" y="110" text-anchor="middle" fill="white" font-size="12" font-weight="bold" font-family="Arial, sans-serif">🎯 第1步</text>
+  <text x="400" y="125" text-anchor="middle" fill="white" font-size="11" font-family="Arial, sans-serif">需求洞察</text>
+  <text x="400" y="140" text-anchor="middle" fill="white" font-size="8" font-family="Arial, sans-serif">真实需求 > 技术炫耀</text>
+  
+  <!-- 第2步：技术选型 -->
+  <circle cx="600" cy="220" r="60" fill="url(#step2Gradient)" filter="url(#shadow)"/>
+  <text x="600" y="210" text-anchor="middle" fill="white" font-size="12" font-weight="bold" font-family="Arial, sans-serif">🛠️ 第2步</text>
+  <text x="600" y="225" text-anchor="middle" fill="white" font-size="11" font-family="Arial, sans-serif">技术选型</text>
+  <text x="600" y="240" text-anchor="middle" fill="white" font-size="8" font-family="Arial, sans-serif">适合 > 先进</text>
+  
+  <!-- 第3步：MVP开发 -->
+  <circle cx="600" cy="380" r="60" fill="url(#step3Gradient)" filter="url(#shadow)"/>
+  <text x="600" y="370" text-anchor="middle" fill="white" font-size="12" font-weight="bold" font-family="Arial, sans-serif">🚀 第3步</text>
+  <text x="600" y="385" text-anchor="middle" fill="white" font-size="11" font-family="Arial, sans-serif">MVP开发</text>
+  <text x="600" y="400" text-anchor="middle" fill="white" font-size="8" font-family="Arial, sans-serif">速度 > 完美</text>
+  
+  <!-- 第4步：用户验证 -->
+  <circle cx="400" cy="480" r="60" fill="url(#step4Gradient)" filter="url(#shadow)"/>
+  <text x="400" y="470" text-anchor="middle" fill="white" font-size="12" font-weight="bold" font-family="Arial, sans-serif">👥 第4步</text>
+  <text x="400" y="485" text-anchor="middle" fill="white" font-size="11" font-family="Arial, sans-serif">用户验证</text>
+  <text x="400" y="500" text-anchor="middle" fill="white" font-size="8" font-family="Arial, sans-serif">反馈 > 假设</text>
+  
+  <!-- 第5步：商业化设计 -->
+  <circle cx="200" cy="380" r="60" fill="url(#step5Gradient)" filter="url(#shadow)"/>
+  <text x="200" y="370" text-anchor="middle" fill="white" font-size="12" font-weight="bold" font-family="Arial, sans-serif">💰 第5步</text>
+  <text x="200" y="385" text-anchor="middle" fill="white" font-size="11" font-family="Arial, sans-serif">商业化设计</text>
+  <text x="200" y="400" text-anchor="middle" fill="white" font-size="8" font-family="Arial, sans-serif">价值 > 功能</text>
+  
+  <!-- 箭头连接 -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#667EEA"/>
+    </marker>
+  </defs>
+  
+  <!-- 第1步到第2步 -->
+  <path d="M 450 160 Q 520 180 550 200" stroke="#667EEA" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- 第2步到第3步 -->
+  <path d="M 600 280 L 600 320" stroke="#667EEA" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- 第3步到第4步 -->
+  <path d="M 550 420 Q 520 440 450 460" stroke="#667EEA" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- 第4步到第5步 -->
+  <path d="M 350 460 Q 320 440 250 420" stroke="#667EEA" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- 第5步到中心 -->
+  <path d="M 250 340 Q 300 320 320 310" stroke="#667EEA" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- 中心到第1步（反馈循环） -->
+  <path d="M 380 220 Q 350 180 380 160" stroke="#FF6B35" stroke-width="3" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+  
+  <!-- 持续优化标签 -->
+  <text x="320" y="180" text-anchor="middle" fill="#FF6B35" font-size="10" font-family="Arial, sans-serif">持续优化</text>
+</svg>

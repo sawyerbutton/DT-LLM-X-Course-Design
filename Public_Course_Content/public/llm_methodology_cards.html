@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡片式 - LLM项目开发五步法</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: transparent;
+            color: #333;
+            line-height: 1.4;
+            padding: 30px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: transparent;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #667EEA;
+        }
+        
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .step-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-top: 5px solid #667EEA;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+        
+        .step-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .step-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #667EEA;
+            margin-bottom: 10px;
+        }
+        
+        .step-subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .step-points {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+        
+        .step-points li {
+            font-size: 0.8rem;
+            color: #4A5568;
+            margin: 5px 0;
+            padding-left: 15px;
+            position: relative;
+        }
+        
+        .step-points li::before {
+            content: "✓";
+            color: #667EEA;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .step-key {
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        
+        /* 成功公式 */
+        .formula-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 3px solid #FFD93D;
+            text-align: center;
+        }
+        
+        .formula-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #FF6B35;
+            margin-bottom: 15px;
+        }
+        
+        .formula-content {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .formula-highlight {
+            color: #FF6B35;
+        }
+        
+        .formula-note {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .steps-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .step-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            🔄 LLM项目开发五步法
+        </div>
+        
+        <div class="steps-grid">
+            <!-- 第1步 -->
+            <div class="step-card">
+                <div class="step-icon">1</div>
+                <div class="step-title">🎯 需求洞察</div>
+                <div class="step-subtitle">从专业领域出发</div>
+                <ul class="step-points">
+                    <li>识别真实痛点</li>
+                    <li>评估市场潜力</li>
+                    <li>确定目标用户</li>
+                </ul>
+                <div class="step-key">真实需求 > 技术炫耀</div>
+            </div>
+            
+            <!-- 第2步 -->
+            <div class="step-card">
+                <div class="step-icon">2</div>
+                <div class="step-title">🛠️ 技术选型</div>
+                <div class="step-subtitle">选择合适工具</div>
+                <ul class="step-points">
+                    <li>选择LLM模型</li>
+                    <li>确定技术架构</li>
+                    <li>平衡成本性能</li>
+                </ul>
+                <div class="step-key">适合 > 先进</div>
+            </div>
+            
+            <!-- 第3步 -->
+            <div class="step-card">
+                <div class="step-icon">3</div>
+                <div class="step-title">🚀 MVP开发</div>
+                <div class="step-subtitle">快速实现核心功能</div>
+                <ul class="step-points">
+                    <li>最小可行产品</li>
+                    <li>核心功能优先</li>
+                    <li>自己先用测试</li>
+                </ul>
+                <div class="step-key">速度 > 完美</div>
+            </div>
+            
+            <!-- 第4步 -->
+            <div class="step-card">
+                <div class="step-icon">4</div>
+                <div class="step-title">👥 用户验证</div>
+                <div class="step-subtitle">收集反馈迭代</div>
+                <ul class="step-points">
+                    <li>小范围测试</li>
+                    <li>收集用户反馈</li>
+                    <li>快速迭代优化</li>
+                </ul>
+                <div class="step-key">反馈 > 假设</div>
+            </div>
+            
+            <!-- 第5步 -->
+            <div class="step-card">
+                <div class="step-icon">5</div>
+                <div class="step-title">💰 商业化设计</div>
+                <div class="step-subtitle">建立收入模式</div>
+                <ul class="step-points">
+                    <li>设计付费模式</li>
+                    <li>建立价值认知</li>
+                    <li>可持续发展</li>
+                </ul>
+                <div class="step-key">价值 > 功能</div>
+            </div>
+        </div>
+        
+        <!-- 成功公式 -->
+        <div class="formula-section">
+            <div class="formula-title">🏆 成功公式</div>
+            <div class="formula-content">
+                <span class="formula-highlight">专业背景</span> × 
+                <span class="formula-highlight">LLM技术</span> × 
+                <span class="formula-highlight">快速迭代</span> = 
+                <span class="formula-highlight">产品价值</span>
+            </div>
+            <div class="formula-note">三要素缺一不可，相乘而非相加</div>
+        </div>
+    </div>
+</body>
+</html> 

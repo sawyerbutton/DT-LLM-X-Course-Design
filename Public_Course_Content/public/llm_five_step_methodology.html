@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM项目开发五步法</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: transparent;
+            min-height: 100vh;
+            padding: 30px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: transparent;
+            border-radius: 20px;
+            padding: 40px;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.9);
+            margin-top: 10px;
+        }
+        
+        .methodology-diagram {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            margin: 40px 0;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+        
+        .center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 160px;
+            height: 160px;
+            background: linear-gradient(135deg, #FFD93D, #FF6B35);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+            z-index: 10;
+        }
+        
+        .center-title {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+        
+        .center-subtitle {
+            font-size: 0.8rem;
+            text-align: center;
+            line-height: 1.3;
+        }
+        
+        .step-circle {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .step-circle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .step-number {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .step-title {
+            font-size: 0.9rem;
+            text-align: center;
+            line-height: 1.1;
+            margin-bottom: 3px;
+        }
+        
+        .step-key {
+            font-size: 0.7rem;
+            opacity: 0.9;
+            text-align: center;
+        }
+        
+        .step1 { top: 40px; left: calc(50% - 70px); }
+        .step2 { top: 120px; right: 60px; }
+        .step3 { bottom: 120px; right: 60px; }
+        .step4 { bottom: 40px; left: calc(50% - 70px); }
+        .step5 { bottom: 120px; left: 60px; }
+        
+        .arrow {
+            position: absolute;
+            stroke: #667EEA;
+            stroke-width: 4;
+            fill: none;
+            marker-end: url(#arrowhead);
+            z-index: 5;
+        }
+        
+        .feedback-arrow {
+            stroke: #FF6B35;
+            stroke-dasharray: 8,8;
+            animation: dash 2s linear infinite;
+        }
+        
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -16;
+            }
+        }
+        
+        .step-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .detail-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-left: 5px solid #667EEA;
+            transition: all 0.3s ease;
+        }
+        
+        .detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+        
+        .detail-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667EEA;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .detail-points {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .detail-points li {
+            color: #4A5568;
+            margin: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        
+        .detail-points li::before {
+            content: "▸";
+            color: #667EEA;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .key-principle {
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 12px;
+            display: inline-block;
+        }
+        
+        @media (max-width: 768px) {
+            .methodology-diagram {
+                height: 500px;
+                padding: 20px;
+            }
+            
+            .step-circle {
+                width: 110px;
+                height: 110px;
+            }
+            
+            .center-circle {
+                width: 130px;
+                height: 130px;
+            }
+            
+            .step1, .step4 { left: calc(50% - 55px); }
+            .step2, .step3 { right: 30px; }
+            .step5 { left: 30px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            🔄 LLM项目开发五步法
+            <div class="subtitle">Five-Step Methodology for LLM Project Development</div>
+        </div>
+        
+        <div class="methodology-diagram">
+            <svg width="100%" height="100%" style="position: absolute; top: 0; left: 0;">
+                <defs>
+                    <marker id="arrowhead" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                        <polygon points="0 0, 12 4, 0 8" fill="#667EEA"/>
+                    </marker>
+                    <marker id="feedbackArrow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                        <polygon points="0 0, 12 4, 0 8" fill="#FF6B35"/>
+                    </marker>
+                </defs>
+                
+                <!-- 步骤间的箭头 -->
+                <path d="M 450 180 Q 520 200 560 240" class="arrow"/>
+                <path d="M 590 350 Q 570 400 520 430" class="arrow"/>
+                <path d="M 450 470 Q 380 450 340 410" class="arrow"/>
+                <path d="M 270 350 Q 250 280 290 240" class="arrow"/>
+                <path d="M 340 200 Q 380 180 420 180" class="arrow"/>
+                
+                <!-- 反馈循环 -->
+                <path d="M 380 260 Q 350 230 380 200" class="arrow feedback-arrow" marker-end="url(#feedbackArrow)"/>
+            </svg>
+            
+            <!-- 中心圆形 -->
+            <div class="center-circle">
+                <div class="center-title">🏆 成功公式</div>
+                <div class="center-subtitle">专业背景 × LLM技术<br>× 快速迭代<br>= 产品价值</div>
+            </div>
+            
+            <!-- 第1步 -->
+            <div class="step-circle step1">
+                <div class="step-number">🎯 第1步</div>
+                <div class="step-title">需求洞察</div>
+                <div class="step-key">真实需求 > 技术炫耀</div>
+            </div>
+            
+            <!-- 第2步 -->
+            <div class="step-circle step2">
+                <div class="step-number">🛠️ 第2步</div>
+                <div class="step-title">技术选型</div>
+                <div class="step-key">适合 > 先进</div>
+            </div>
+            
+            <!-- 第3步 -->
+            <div class="step-circle step3">
+                <div class="step-number">🚀 第3步</div>
+                <div class="step-title">MVP开发</div>
+                <div class="step-key">速度 > 完美</div>
+            </div>
+            
+            <!-- 第4步 -->
+            <div class="step-circle step4">
+                <div class="step-number">👥 第4步</div>
+                <div class="step-title">用户验证</div>
+                <div class="step-key">反馈 > 假设</div>
+            </div>
+            
+            <!-- 第5步 -->
+            <div class="step-circle step5">
+                <div class="step-number">💰 第5步</div>
+                <div class="step-title">商业化设计</div>
+                <div class="step-key">价值 > 功能</div>
+            </div>
+        </div>
+        
+        <div class="step-details">
+            <div class="detail-card">
+                <div class="detail-title">🎯 第1步：需求洞察</div>
+                <ul class="detail-points">
+                    <li>从自身专业领域出发</li>
+                    <li>识别高频、刚需痛点</li>
+                    <li>评估市场规模潜力</li>
+                </ul>
+                <div class="key-principle">关键：真实需求 > 技术炫耀</div>
+            </div>
+            
+            <div class="detail-card">
+                <div class="detail-title">🛠️ 第2步：技术选型</div>
+                <ul class="detail-points">
+                    <li>选择合适的LLM基础模型</li>
+                    <li>确定技术架构（API/混合/本地）</li>
+                    <li>评估成本与性能平衡</li>
+                </ul>
+                <div class="key-principle">关键：适合 > 先进</div>
+            </div>
+            
+            <div class="detail-card">
+                <div class="detail-title">🚀 第3步：MVP开发</div>
+                <ul class="detail-points">
+                    <li>最小可行产品快速实现</li>
+                    <li>核心功能优先，完美次之</li>
+                    <li>自己先用，解决自己的问题</li>
+                </ul>
+                <div class="key-principle">关键：速度 > 完美</div>
+            </div>
+            
+            <div class="detail-card">
+                <div class="detail-title">👥 第4步：用户验证</div>
+                <ul class="detail-points">
+                    <li>小范围测试，收集反馈</li>
+                    <li>快速迭代，持续优化</li>
+                    <li>找到产品-市场匹配点</li>
+                </ul>
+                <div class="key-principle">关键：反馈 > 假设</div>
+            </div>
+            
+            <div class="detail-card">
+                <div class="detail-title">💰 第5步：商业化设计</div>
+                <ul class="detail-points">
+                    <li>免费-付费梯度设计</li>
+                    <li>建立用户价值认知</li>
+                    <li>形成可持续收入模式</li>
+                </ul>
+                <div class="key-principle">关键：价值 > 功能</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

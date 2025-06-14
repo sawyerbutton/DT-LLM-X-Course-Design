@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>优化版 - LLM项目开发五步法</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: transparent;
+            color: #333;
+            line-height: 1.4;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: transparent;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #667EEA;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .methodology-diagram {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .center-formula {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, #FFD93D, #FF6B35);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+            z-index: 10;
+        }
+        
+        .center-title {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .center-subtitle {
+            font-size: 0.7rem;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .step-circle {
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        .step-number {
+            font-size: 0.7rem;
+            margin-bottom: 3px;
+        }
+        
+        .step-title {
+            font-size: 0.75rem;
+            margin-bottom: 2px;
+        }
+        
+        .step-key {
+            font-size: 0.55rem;
+            opacity: 0.9;
+        }
+        
+        /* 精确的五边形分布 - 基于数学计算 */
+        .step1 { top: 10px; left: calc(50% - 55px); }          /* 12点钟方向 */
+        .step2 { top: 95px; right: 15px; }                      /* 2点钟方向 */
+        .step3 { bottom: 70px; right: 45px; }                   /* 4点钟方向 */
+        .step4 { bottom: 70px; left: 45px; }                    /* 8点钟方向 */
+        .step5 { top: 95px; left: 15px; }                       /* 10点钟方向 */
+        
+        .arrow-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+        }
+        
+        @media (max-width: 768px) {
+            .methodology-diagram {
+                width: 400px;
+                height: 400px;
+            }
+            
+            .step-circle {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .center-formula {
+                width: 110px;
+                height: 110px;
+            }
+            
+            .step1 { top: 5px; left: calc(50% - 45px); }
+            .step2 { top: 75px; right: 10px; }
+            .step3 { bottom: 55px; right: 35px; }
+            .step4 { bottom: 55px; left: 35px; }
+            .step5 { top: 75px; left: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            🔄 LLM项目开发五步法
+        </div>
+        
+        <div class="methodology-diagram">
+            <!-- SVG箭头 -->
+            <svg class="arrow-svg">
+                <defs>
+                    <marker id="arrowhead" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto">
+                        <polygon points="0 0, 12 5, 0 10" fill="#667EEA"/>
+                    </marker>
+                </defs>
+                <!-- 步骤间连接箭头 - 基于实际位置的精确路径 -->
+                <!-- 第1步到第2步 -->
+                <path d="M 305 65 Q 380 80 395 150" stroke="#667EEA" stroke-width="4" fill="none" marker-end="url(#arrowhead)"/>
+                <!-- 第2步到第3步 -->
+                <path d="M 420 205 Q 440 270 400 320" stroke="#667EEA" stroke-width="4" fill="none" marker-end="url(#arrowhead)"/>
+                <!-- 第3步到第4步 -->
+                <path d="M 345 375 Q 250 395 155 375" stroke="#667EEA" stroke-width="4" fill="none" marker-end="url(#arrowhead)"/>
+                <!-- 第4步到第5步 -->
+                <path d="M 100 320 Q 60 270 80 205" stroke="#667EEA" stroke-width="4" fill="none" marker-end="url(#arrowhead)"/>
+                <!-- 第5步到第1步 -->
+                <path d="M 135 150 Q 180 80 245 65" stroke="#667EEA" stroke-width="4" fill="none" marker-end="url(#arrowhead)"/>
+            </svg>
+            
+            <!-- 中心成功公式 -->
+            <div class="center-formula">
+                <div class="center-title">🏆 成功公式</div>
+                <div class="center-subtitle">专业 × 技术<br>× 迭代</div>
+            </div>
+            
+            <!-- 五个步骤 -->
+            <div class="step-circle step1">
+                <div class="step-number">🎯 第1步</div>
+                <div class="step-title">需求洞察</div>
+                <div class="step-key">真实需求 > 技术炫耀</div>
+            </div>
+            
+            <div class="step-circle step2">
+                <div class="step-number">🛠️ 第2步</div>
+                <div class="step-title">技术选型</div>
+                <div class="step-key">适合 > 先进</div>
+            </div>
+            
+            <div class="step-circle step3">
+                <div class="step-number">🚀 第3步</div>
+                <div class="step-title">MVP开发</div>
+                <div class="step-key">速度 > 完美</div>
+            </div>
+            
+            <div class="step-circle step4">
+                <div class="step-number">👥 第4步</div>
+                <div class="step-title">用户验证</div>
+                <div class="step-key">反馈 > 假设</div>
+            </div>
+            
+            <div class="step-circle step5">
+                <div class="step-number">💰 第5步</div>
+                <div class="step-title">商业化设计</div>
+                <div class="step-key">价值 > 功能</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

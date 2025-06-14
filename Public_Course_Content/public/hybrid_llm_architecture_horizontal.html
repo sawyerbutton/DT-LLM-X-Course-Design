@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>混合LLM架构 - 横版系统设计图</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'SF Pro Display', sans-serif;
+            background: transparent;
+            color: #333;
+            line-height: 1.3;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: transparent;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .architecture-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .architecture-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .architecture-flow {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: stretch;
+            gap: 25px;
+            min-height: 600px;
+        }
+        
+        .layer {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-top: 5px solid;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .layer:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .layer-input { border-top-color: #4CAF50; }
+        .layer-routing { border-top-color: #FF9800; }
+        .layer-processing { border-top-color: #2196F3; }
+        .layer-output { border-top-color: #9C27B0; }
+        
+        .layer-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .layer-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0 auto 12px;
+        }
+        
+        .icon-input { background: linear-gradient(135deg, #4CAF50, #45a049); }
+        .icon-routing { background: linear-gradient(135deg, #FF9800, #f57c00); }
+        .icon-processing { background: linear-gradient(135deg, #2196F3, #1976d2); }
+        .icon-output { background: linear-gradient(135deg, #9C27B0, #7b1fa2); }
+        
+        .layer-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 5px;
+        }
+        
+        .layer-subtitle {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .layer-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .module {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        
+        .module:hover {
+            border-color: #667eea;
+            background: #fff;
+            transform: translateY(-2px);
+        }
+        
+        .module-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .module-features {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .module-features li {
+            font-size: 0.75rem;
+            color: #555;
+            margin: 4px 0;
+            padding-left: 12px;
+            position: relative;
+        }
+        
+        .module-features li::before {
+            content: "▶";
+            color: #667eea;
+            font-size: 0.6rem;
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+        
+        .flow-arrow {
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            z-index: 3;
+        }
+        
+        .layer:last-child .flow-arrow {
+            display: none;
+        }
+        
+        .processing-core {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .core-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .llm-models {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        
+        .llm-model {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 8px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .model-name {
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-bottom: 2px;
+        }
+        
+        .model-type {
+            font-size: 0.65rem;
+            opacity: 0.9;
+        }
+        
+        .tech-specs {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .specs-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .spec-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 18px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .spec-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .spec-value {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .performance-metrics {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .metrics-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+        
+        .metric {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 12px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .metric-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .metric-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 1200px) {
+            .architecture-flow {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .flow-arrow {
+                right: 50%;
+                top: auto;
+                bottom: -12px;
+                transform: translateX(50%) rotate(90deg);
+            }
+            
+            .layer:last-child .flow-arrow {
+                display: none;
+            }
+            
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .llm-models {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            🏗️ 混合LLM架构 - 企业级智能处理系统
+        </div>
+        
+        <div class="architecture-container">
+            <div class="architecture-flow">
+                <!-- 输入层 -->
+                <div class="layer layer-input">
+                    <div class="layer-header">
+                        <div class="layer-icon icon-input">📥</div>
+                        <div class="layer-title">输入层</div>
+                        <div class="layer-subtitle">Input Layer</div>
+                    </div>
+                    <div class="layer-content">
+                        <div class="module">
+                            <div class="module-title">📄 PDF智能解析</div>
+                            <ul class="module-features">
+                                <li>自适应格式识别</li>
+                                <li>数学公式提取</li>
+                                <li>图表结构分析</li>
+                                <li>多语言文档支持</li>
+                            </ul>
+                        </div>
+                        <div class="module">
+                            <div class="module-title">🔤 文本预处理</div>
+                            <ul class="module-features">
+                                <li>专业术语标准化</li>
+                                <li>语义分段优化</li>
+                                <li>噪声数据清洗</li>
+                                <li>编码格式统一</li>
+                            </ul>
+                        </div>
+                        <div class="module">
+                            <div class="module-title">🔍 内容结构化</div>
+                            <ul class="module-features">
+                                <li>章节层次识别</li>
+                                <li>关键信息提取</li>
+                                <li>元数据生成</li>
+                                <li>质量评估标记</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                </div>
+                
+                <!-- 智能路由层 -->
+                <div class="layer layer-routing">
+                    <div class="layer-header">
+                        <div class="layer-icon icon-routing">🧠</div>
+                        <div class="layer-title">智能路由层</div>
+                        <div class="layer-subtitle">Routing Layer</div>
+                    </div>
+                    <div class="layer-content">
+                        <div class="module">
+                            <div class="module-title">🎯 任务分类器</div>
+                            <ul class="module-features">
+                                <li>文档类型识别</li>
+                                <li>复杂度评估</li>
+                                <li>专业领域判断</li>
+                                <li>处理优先级排序</li>
+                            </ul>
+                        </div>
+                        <div class="module">
+                            <div class="module-title">⚖️ 负载均衡</div>
+                            <ul class="module-features">
+                                <li>资源使用监控</li>
+                                <li>动态分配策略</li>
+                                <li>故障转移机制</li>
+                                <li>性能优化调度</li>
+                            </ul>
+                        </div>
+                        <div class="module">
+                            <div class="module-title">🔀 智能分发</div>
+                            <ul class="module-features">
+                                <li>模型匹配算法</li>
+                                <li>并行处理协调</li>
+                                <li>结果聚合策略</li>
+                                <li>质量控制检查</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                </div>
+                
+                <!-- 处理层 -->
+                <div class="layer layer-processing">
+                    <div class="layer-header">
+                        <div class="layer-icon icon-processing">⚡</div>
+                        <div class="layer-title">处理层</div>
+                        <div class="layer-subtitle">Processing Layer</div>
+                    </div>
+                    <div class="layer-content">
+                        <div class="processing-core">
+                            <div class="core-title">🤖 多LLM协同处理</div>
+                            <div class="llm-models">
+                                <div class="llm-model">
+                                    <div class="model-name">GPT-4</div>
+                                    <div class="model-type">通用推理</div>
+                                </div>
+                                <div class="llm-model">
+                                    <div class="model-name">Claude-3</div>
+                                    <div class="model-type">长文本</div>
+                                </div>
+                                <div class="llm-model">
+                                    <div class="model-name">专业模型</div>
+                                    <div class="model-type">领域优化</div>
+                                </div>
+                                <div class="llm-model">
+                                    <div class="model-name">本地模型</div>
+                                    <div class="model-type">隐私保护</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="module">
+                            <div class="module-title">📚 知识图谱</div>
+                            <ul class="module-features">
+                                <li>学术概念关联</li>
+                                <li>专业术语库</li>
+                                <li>领域知识推理</li>
+                                <li>上下文增强</li>
+                            </ul>
+                        </div>
+                        <div class="module">
+                            <div class="module-title">🔧 后处理引擎</div>
+                            <ul class="module-features">
+                                <li>结果标准化</li>
+                                <li>一致性检查</li>
+                                <li>格式优化</li>
+                                <li>错误修正</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                </div>
+                
+                <!-- 输出层 -->
+                <div class="layer layer-output">
+                    <div class="layer-header">
+                        <div class="layer-icon icon-output">📊</div>
+                        <div class="layer-title">输出层</div>
+                        <div class="layer-subtitle">Output Layer</div>
+                    </div>
+                    <div class="layer-content">
+                        <div class="module">
+                            <div class="module-title">📋 结构化输出</div>
+                            <ul class="module-features">
+                                <li>多格式导出</li>
+                                <li>模板化生成</li>
+                                <li>可视化图表</li>
+                                <li>交互式报告</li>
+                            </ul>
+                        </div>
+                        <div class="module">
+                            <div class="module-title">⭐ 质量评分</div>
+                            <ul class="module-features">
+                                <li>准确性评估</li>
+                                <li>完整性检查</li>
+                                <li>可信度分析</li>
+                                <li>改进建议</li>
+                            </ul>
+                        </div>
+                        <div class="module">
+                            <div class="module-title">🔄 反馈机制</div>
+                            <ul class="module-features">
+                                <li>用户评价收集</li>
+                                <li>模型性能监控</li>
+                                <li>持续学习优化</li>
+                                <li>版本迭代管理</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 技术规格 -->
+        <div class="tech-specs">
+            <div class="specs-title">🔧 核心技术规格与性能指标</div>
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <div class="spec-label">🚀 处理能力</div>
+                    <div class="spec-value">支持单次处理100页以上学术文档，并发处理50+用户请求，平均响应时间&lt;30秒</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">🎯 准确率保障</div>
+                    <div class="spec-value">专业领域识别准确率95%+，关键信息提取准确率90%+，多重验证机制</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">📈 扩展性设计</div>
+                    <div class="spec-value">微服务架构，支持水平扩展，模块化部署，云原生支持</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">🔒 安全保障</div>
+                    <div class="spec-value">端到端加密，数据隐私保护，访问权限控制，审计日志完整</div>
+                </div>
+            </div>
+            
+            <!-- 性能指标 -->
+            <div class="performance-metrics">
+                <div class="metrics-title">📊 关键性能指标 (KPI)</div>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-value">95%</div>
+                        <div class="metric-label">处理准确率</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">&lt;30s</div>
+                        <div class="metric-label">平均响应时间</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">99.9%</div>
+                        <div class="metric-label">系统可用性</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">50+</div>
+                        <div class="metric-label">并发用户数</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">100+</div>
+                        <div class="metric-label">页面处理能力</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">24/7</div>
+                        <div class="metric-label">服务可用时间</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

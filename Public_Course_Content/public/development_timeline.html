@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12周开发计划 - 项目时间线</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'SF Pro Display', sans-serif;
+            background: transparent;
+            color: #333;
+            line-height: 1.4;
+            padding: 30px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: transparent;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .timeline-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .phase {
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .phase-marker {
+            position: absolute;
+            left: 50%;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 0 4px white, 0 0 0 8px #667eea;
+            z-index: 2;
+        }
+        
+        .phase-content {
+            width: 45%;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-left: 5px solid;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .phase-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .phase:nth-child(odd) .phase-content {
+            margin-left: 0;
+            border-left-color: #4CAF50;
+        }
+        
+        .phase:nth-child(even) .phase-content {
+            margin-left: 55%;
+            border-left-color: #2196F3;
+        }
+        
+        .phase-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .phase-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+        
+        .phase:nth-child(odd) .phase-icon {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+        }
+        
+        .phase:nth-child(even) .phase-icon {
+            background: linear-gradient(135deg, #2196F3, #1976d2);
+        }
+        
+        .phase-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 3px;
+        }
+        
+        .phase-duration {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .phase-tasks {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 15px;
+        }
+        
+        .phase-tasks li {
+            font-size: 0.9rem;
+            color: #555;
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .phase-tasks li::before {
+            content: "✓";
+            color: #667eea;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .phase-deliverables {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+        }
+        
+        .deliverables-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+        
+        .deliverables-list {
+            font-size: 0.8rem;
+            color: #4a5568;
+            line-height: 1.4;
+        }
+        
+        .milestone {
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+        
+        .milestone-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .milestone-desc {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .risk-mitigation {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid #FFC107;
+        }
+        
+        .risk-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #FF8F00;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .risk-item {
+            background: #fff3cd;
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 4px solid #FFC107;
+        }
+        
+        .risk-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #856404;
+            margin-bottom: 8px;
+        }
+        
+        .risk-solution {
+            font-size: 0.8rem;
+            color: #6c5700;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .phase-marker {
+                left: 30px;
+            }
+            
+            .phase-content {
+                width: calc(100% - 60px);
+                margin-left: 60px !important;
+            }
+            
+            .risk-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            📅 12周开发计划 - 混合LLM系统实现路径
+        </div>
+        
+        <div class="timeline-container">
+            <div class="timeline">
+                <!-- 第1-2周 -->
+                <div class="phase">
+                    <div class="phase-marker"></div>
+                    <div class="phase-content">
+                        <div class="phase-header">
+                            <div class="phase-icon">🎯</div>
+                            <div>
+                                <div class="phase-title">需求细化 + 架构设计</div>
+                                <div class="phase-duration">第1-2周</div>
+                            </div>
+                        </div>
+                        <ul class="phase-tasks">
+                            <li>详细功能规格定义</li>
+                            <li>技术架构确定</li>
+                            <li>开发环境搭建</li>
+                            <li>团队分工明确</li>
+                            <li>项目管理工具配置</li>
+                        </ul>
+                        <div class="phase-deliverables">
+                            <div class="deliverables-title">📋 交付物</div>
+                            <div class="deliverables-list">
+                                需求规格书、系统架构图、技术选型报告、开发环境文档
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 第3-4周 -->
+                <div class="phase">
+                    <div class="phase-marker"></div>
+                    <div class="phase-content">
+                        <div class="phase-header">
+                            <div class="phase-icon">🔧</div>
+                            <div>
+                                <div class="phase-title">核心模块开发</div>
+                                <div class="phase-duration">第3-4周</div>
+                            </div>
+                        </div>
+                        <ul class="phase-tasks">
+                            <li>PDF解析模块开发</li>
+                            <li>LLM接口封装</li>
+                            <li>智能路由逻辑实现</li>
+                            <li>数据库设计与实现</li>
+                            <li>基础API框架搭建</li>
+                        </ul>
+                        <div class="phase-deliverables">
+                            <div class="deliverables-title">📋 交付物</div>
+                            <div class="deliverables-list">
+                                PDF解析器、LLM接口库、路由模块、数据库schema、API文档
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="milestone">
+                    <div class="milestone-title">🎉 第一个里程碑</div>
+                    <div class="milestone-desc">核心技术栈验证完成，基础架构可运行</div>
+                </div>
+                
+                <!-- 第5-6周 -->
+                <div class="phase">
+                    <div class="phase-marker"></div>
+                    <div class="phase-content">
+                        <div class="phase-header">
+                            <div class="phase-icon">🧠</div>
+                            <div>
+                                <div class="phase-title">专业优化</div>
+                                <div class="phase-duration">第5-6周</div>
+                            </div>
+                        </div>
+                        <ul class="phase-tasks">
+                            <li>学术文本预处理优化</li>
+                            <li>专业术语识别系统</li>
+                            <li>结果质量评估模块</li>
+                            <li>知识图谱集成</li>
+                            <li>多模型协同机制</li>
+                        </ul>
+                        <div class="phase-deliverables">
+                            <div class="deliverables-title">📋 交付物</div>
+                            <div class="deliverables-list">
+                                文本预处理器、术语识别器、质量评估器、知识库、协同调度器
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 第7-8周 -->
+                <div class="phase">
+                    <div class="phase-marker"></div>
+                    <div class="phase-content">
+                        <div class="phase-header">
+                            <div class="phase-icon">🔗</div>
+                            <div>
+                                <div class="phase-title">系统集成</div>
+                                <div class="phase-duration">第7-8周</div>
+                            </div>
+                        </div>
+                        <ul class="phase-tasks">
+                            <li>各模块集成联调</li>
+                            <li>端到端流程测试</li>
+                            <li>错误处理机制</li>
+                            <li>日志监控系统</li>
+                            <li>用户界面开发</li>
+                        </ul>
+                        <div class="phase-deliverables">
+                            <div class="deliverables-title">📋 交付物</div>
+                            <div class="deliverables-list">
+                                集成系统、测试报告、监控面板、用户界面、部署脚本
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="milestone">
+                    <div class="milestone-title">🚀 第二个里程碑</div>
+                    <div class="milestone-desc">系统集成完成，可进行端到端测试</div>
+                </div>
+                
+                <!-- 第9-10周 -->
+                <div class="phase">
+                    <div class="phase-marker"></div>
+                    <div class="phase-content">
+                        <div class="phase-header">
+                            <div class="phase-icon">🧪</div>
+                            <div>
+                                <div class="phase-title">效果验证测试</div>
+                                <div class="phase-duration">第9-10周</div>
+                            </div>
+                        </div>
+                        <ul class="phase-tasks">
+                            <li>大规模数据测试</li>
+                            <li>准确率评估</li>
+                            <li>用户体验测试</li>
+                            <li>边界条件验证</li>
+                            <li>安全性测试</li>
+                        </ul>
+                        <div class="phase-deliverables">
+                            <div class="deliverables-title">📋 交付物</div>
+                            <div class="deliverables-list">
+                                测试数据集、准确率报告、用户反馈、安全评估、优化建议
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 第11-12周 -->
+                <div class="phase">
+                    <div class="phase-marker"></div>
+                    <div class="phase-content">
+                        <div class="phase-header">
+                            <div class="phase-icon">⚡</div>
+                            <div>
+                                <div class="phase-title">性能优化调整</div>
+                                <div class="phase-duration">第11-12周</div>
+                            </div>
+                        </div>
+                        <ul class="phase-tasks">
+                            <li>性能瓶颈分析</li>
+                            <li>算法优化调整</li>
+                            <li>缓存策略优化</li>
+                            <li>并发处理优化</li>
+                            <li>生产环境部署</li>
+                        </ul>
+                        <div class="phase-deliverables">
+                            <div class="deliverables-title">📋 交付物</div>
+                            <div class="deliverables-list">
+                                性能报告、优化方案、生产系统、运维文档、用户手册
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="milestone">
+                    <div class="milestone-title">🎊 项目完成</div>
+                    <div class="milestone-desc">系统正式上线，具备商业化运营能力</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 风险缓解策略 -->
+        <div class="risk-mitigation">
+            <div class="risk-title">⚠️ 关键风险与缓解策略</div>
+            <div class="risk-grid">
+                <div class="risk-item">
+                    <div class="risk-label">技术风险</div>
+                    <div class="risk-solution">
+                        采用成熟技术栈，建立技术原型验证，预留技术调研时间，建立备选方案
+                    </div>
+                </div>
+                <div class="risk-item">
+                    <div class="risk-label">进度风险</div>
+                    <div class="risk-solution">
+                        采用敏捷开发，设置周检查点，预留缓冲时间，关键路径优先
+                    </div>
+                </div>
+                <div class="risk-item">
+                    <div class="risk-label">质量风险</div>
+                    <div class="risk-solution">
+                        建立测试驱动开发，持续集成部署，代码审查机制，用户反馈循环
+                    </div>
+                </div>
+                <div class="risk-item">
+                    <div class="risk-label">资源风险</div>
+                    <div class="risk-solution">
+                        合理人员配置，技能互补，知识共享机制，外部资源备选
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

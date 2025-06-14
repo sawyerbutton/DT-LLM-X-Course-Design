@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简化版 - LLM项目开发五步法</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: transparent;
+            color: #333;
+            line-height: 1.4;
+            padding: 40px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: transparent;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 40px;
+            color: #667EEA;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        /* 方案1: 水平线性流程 */
+        .methodology-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .step-circle {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .step-circle:hover {
+            transform: translateY(-5px);
+        }
+        
+        .step-number {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .step-title {
+            font-size: 0.9rem;
+            margin-bottom: 3px;
+        }
+        
+        .step-key {
+            font-size: 0.6rem;
+            opacity: 0.9;
+        }
+        
+        .arrow {
+            color: #667EEA;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+        
+        .step-details {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #667EEA;
+            max-width: 120px;
+        }
+        
+        .detail-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #667EEA;
+            margin-bottom: 8px;
+        }
+        
+        .detail-points {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .detail-points li {
+            font-size: 0.7rem;
+            color: #4A5568;
+            margin: 3px 0;
+            padding-left: 12px;
+            position: relative;
+        }
+        
+        .detail-points li::before {
+            content: "•";
+            color: #667EEA;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .detail-key {
+            background: #667EEA;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            margin-top: 8px;
+            display: inline-block;
+        }
+        
+        /* 成功公式 */
+        .success-formula {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 3px solid #FFD93D;
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .formula-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FF6B35;
+            margin-bottom: 20px;
+        }
+        
+        .formula-content {
+            background: linear-gradient(135deg, #FFD93D, #FF6B35);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .formula-note {
+            color: #E65100;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .methodology-flow {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .arrow {
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+            
+            .step-circle {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .step-details {
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            🔄 LLM项目开发五步法
+        </div>
+        
+        <div class="methodology-flow">
+            <!-- 第1步 -->
+            <div class="step-item">
+                <div class="step-circle">
+                    <div class="step-number">🎯 第1步</div>
+                    <div class="step-title">需求洞察</div>
+                    <div class="step-key">真实需求 > 技术炫耀</div>
+                </div>
+                <div class="step-details">
+                    <div class="detail-title">需求洞察</div>
+                    <ul class="detail-points">
+                        <li>从自身专业领域出发</li>
+                        <li>识别高频、刚需痛点</li>
+                        <li>评估市场规模潜力</li>
+                    </ul>
+                    <div class="detail-key">真实需求 > 技术炫耀</div>
+                </div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <!-- 第2步 -->
+            <div class="step-item">
+                <div class="step-circle">
+                    <div class="step-number">🛠️ 第2步</div>
+                    <div class="step-title">技术选型</div>
+                    <div class="step-key">适合 > 先进</div>
+                </div>
+                <div class="step-details">
+                    <div class="detail-title">技术选型</div>
+                    <ul class="detail-points">
+                        <li>选择合适的LLM基础模型</li>
+                        <li>确定技术架构</li>
+                        <li>评估成本与性能平衡</li>
+                    </ul>
+                    <div class="detail-key">适合 > 先进</div>
+                </div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <!-- 第3步 -->
+            <div class="step-item">
+                <div class="step-circle">
+                    <div class="step-number">🚀 第3步</div>
+                    <div class="step-title">MVP开发</div>
+                    <div class="step-key">速度 > 完美</div>
+                </div>
+                <div class="step-details">
+                    <div class="detail-title">MVP开发</div>
+                    <ul class="detail-points">
+                        <li>最小可行产品快速实现</li>
+                        <li>核心功能优先</li>
+                        <li>自己先用，解决自己的问题</li>
+                    </ul>
+                    <div class="detail-key">速度 > 完美</div>
+                </div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <!-- 第4步 -->
+            <div class="step-item">
+                <div class="step-circle">
+                    <div class="step-number">👥 第4步</div>
+                    <div class="step-title">用户验证</div>
+                    <div class="step-key">反馈 > 假设</div>
+                </div>
+                <div class="step-details">
+                    <div class="detail-title">用户验证</div>
+                    <ul class="detail-points">
+                        <li>小范围测试，收集反馈</li>
+                        <li>快速迭代，持续优化</li>
+                        <li>找到产品-市场匹配点</li>
+                    </ul>
+                    <div class="detail-key">反馈 > 假设</div>
+                </div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <!-- 第5步 -->
+            <div class="step-item">
+                <div class="step-circle">
+                    <div class="step-number">💰 第5步</div>
+                    <div class="step-title">商业化设计</div>
+                    <div class="step-key">价值 > 功能</div>
+                </div>
+                <div class="step-details">
+                    <div class="detail-title">商业化设计</div>
+                    <ul class="detail-points">
+                        <li>免费-付费梯度设计</li>
+                        <li>建立用户价值认知</li>
+                        <li>形成可持续收入模式</li>
+                    </ul>
+                    <div class="detail-key">价值 > 功能</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 成功公式 -->
+        <div class="success-formula">
+            <div class="formula-title">🏆 成功公式</div>
+            <div class="formula-content">
+                专业背景 × LLM技术 × 快速迭代 = 产品价值
+            </div>
+            <div class="formula-note">
+                三要素缺一不可，相乘而非相加，实现价值最大化
+            </div>
+        </div>
+    </div>
+</body>
+</html>
